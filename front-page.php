@@ -18,7 +18,7 @@ $block_content = do_blocks( '
 ?>
 
 <div class="body-container">
-
+    <p>test</p>
     <?php echo $block_content; ?>
 
 </div>
