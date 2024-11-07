@@ -232,7 +232,7 @@ function automatic_GitHub_updates($data) {
     // GitHub information	    
     $user = 'Postali-Webdev'; // The GitHub username hosting the repository
     $repo = 'Crest-Controller-Theme'; // Repository name as it appears in the URL
-    $token = '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'; //https://github.com/settings/personal-access-tokens/new
+    $token = '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'; //https://github.com/settings/personal-access-tokens/new
     $file = @json_decode(@file_get_contents('https://api.github.com/repos/'.$user.'/'.$repo.'/releases/latest', false,
             stream_context_create(['http' => ['header' => "User-Agent: ".$user."\r\nAuthorization: token $token\r\n"]])
         ));
@@ -258,7 +258,7 @@ function automatic_GitHub_updates($data) {
 add_filter('pre_set_site_transient_update_themes', 'automatic_GitHub_updates', 100, 1);
 
 add_filter('http_request_args', function($parsed_args, $url) {
-    $token = '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'; //https://github.com/settings/personal-access-tokens/new
+    $token = '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'; //https://github.com/settings/personal-access-tokens/new
     $user = 'Postali-Webdev'; // The GitHub username hosting the repository
     $repo = 'Crest-Controller-Theme'; // Repository name as it appears in the URL
 
