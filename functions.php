@@ -258,7 +258,7 @@ if (!function_exists('write_log')) {
 // Automatic theme updates from the GitHub repository
 function automatic_GitHub_updates($data) {
     // Theme information
-    $theme   = get_stylesheet(); // Folder name of the current theme
+    $theme   = basename(get_template_directory()); // Folder name of the current theme
     $current = wp_get_theme()->get('Version'); // Get the version of the current theme
     // GitHub information	    
     $user = 'Postali-Webdev'; // The GitHub username hosting the repository
