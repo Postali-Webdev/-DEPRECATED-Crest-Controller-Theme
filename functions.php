@@ -64,6 +64,15 @@ if( function_exists('acf_add_options_page') ) {
         'icon_url'      => 'dashicons-networking', // Add this line and replace the second inverted commas with class of the icon you like
         'redirect'      => false
     ));
+    
+    acf_add_options_page(array(
+        'page_title'    => 'Github Settings',
+        'menu_title'    => 'Github Settings',
+        'menu_slug'     => 'github-settings',
+        'capability'    => 'edit_posts',
+        'icon_url'      => 'dashicons-rest-api',
+        'redirect'      => false
+    ));
 }
 
 // Add required ACF fields for options pages
@@ -86,6 +95,28 @@ function parent_crest_acf_options_fields() {
                     'param' => 'options_page',
                     'operator' => '==',
                     'value' => 'global-schema'
+                ),
+            ),
+        ),
+    ));
+
+    acf_add_local_field_group(array(
+        'key' => 'group_15a9b9b0b9e9b6',
+        'title' => 'Github Settings',
+        'fields' => array (
+            array (
+                'key' => 'field_15a9b9b0b9e9b7',
+                'label' => 'Github Token',
+                'name' => 'github_token',
+                'type' => 'password',
+            )
+        ),
+        'location' => array (
+            array (
+                array (
+                    'param' => 'options_page',
+                    'operator' => '==',
+                    'value' => 'github-settings'
                 ),
             ),
         ),
@@ -232,7 +263,7 @@ function automatic_GitHub_updates($data) {
     // GitHub information	    
     $user = 'Postali-Webdev'; // The GitHub username hosting the repository
     $repo = 'Crest-Controller-Theme'; // Repository name as it appears in the URL
-    $token = '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'; //https://github.com/settings/personal-access-tokens/new
+    $token = get_field('github_token', 'option'); //https://github.com/settings/personal-access-tokens/new
     $file = @json_decode(@file_get_contents('https://api.github.com/repos/'.$user.'/'.$repo.'/releases/latest', false,
             stream_context_create(['http' => ['header' => "User-Agent: ".$user."\r\nAuthorization: token $token\r\n"]])
         ));
@@ -258,7 +289,7 @@ function automatic_GitHub_updates($data) {
 add_filter('pre_set_site_transient_update_themes', 'automatic_GitHub_updates', 100, 1);
 
 add_filter('http_request_args', function($parsed_args, $url) {
-    $token = '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'; //https://github.com/settings/personal-access-tokens/new
+    $token = get_field('github_token', 'option'); //https://github.com/settings/personal-access-tokens/new
     $user = 'Postali-Webdev'; // The GitHub username hosting the repository
     $repo = 'Crest-Controller-Theme'; // Repository name as it appears in the URL
 
