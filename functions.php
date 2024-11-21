@@ -268,7 +268,12 @@ function automatic_GitHub_updates($data) {
             stream_context_create(['http' => ['header' => "User-Agent: ".$user."\r\nAuthorization: token $token\r\n"]])
         ));
 
+    write_log([
+        'file' => $file
+    ]);
+
     if($file) {
+        $zip_source = $file->zipball_url;
         $update = filter_var($file->tag_name, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         // Only return a response if the new version number is higher than the current version
         if($update > $current) {
@@ -278,7 +283,7 @@ function automatic_GitHub_updates($data) {
             // This way you can still use tags like v1.1 or ver1.1 if desired
             'new_version' => $update,
             'url'         => 'https://github.com/'.$user.'/'.$repo,
-            'package'     => $file->assets[0]->browser_download_url,
+            'package'     => $zip_source
         );
         }
     }
