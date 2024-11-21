@@ -268,10 +268,6 @@ function automatic_GitHub_updates($data) {
             stream_context_create(['http' => ['header' => "User-Agent: ".$user."\r\nAuthorization: token $token\r\n"]])
         ));
 
-    write_log([
-        'file' => $file
-    ]);
-
     if($file) {
         $zip_source = $file->zipball_url;
         $update = filter_var($file->tag_name, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
