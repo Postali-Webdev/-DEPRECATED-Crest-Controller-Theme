@@ -258,7 +258,8 @@ if (!function_exists('write_log')) {
 // Automatic theme updates from the GitHub repository
 function automatic_GitHub_updates($data) {
     // Theme information
-    $theme   = basename(get_template_directory()); // Folder name of the current theme
+    //$theme   = basename(get_template_directory()); // Folder name of the current theme
+    $theme = 'crest-controller-theme-main';
     $current = wp_get_theme()->get('Version'); // Get the version of the current theme
     // GitHub information	    
     $user = 'Postali-Webdev'; // The GitHub username hosting the repository
@@ -273,21 +274,42 @@ function automatic_GitHub_updates($data) {
         $update = filter_var($file->tag_name, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         // Only return a response if the new version number is higher than the current version
         if($update > $current) {
-        $data->response[$theme] = array(
-            'theme'       => $theme,
-            // Strip the version number of any non-alpha characters (excluding the period)
-            // This way you can still use tags like v1.1 or ver1.1 if desired
-            'new_version' => $update,
-            'url'         => 'https://github.com/'.$user.'/'.$repo,
-            'package'     => $zip_source
-        );
+            $data->response[$theme] = array(
+                'theme'       =>  'crest-controller-theme-main',
+                // Strip the version number of any non-alpha characters (excluding the period)
+                // This way you can still use tags like v1.1 or ver1.1 if desired
+                'new_version' => $update,
+                'url'         => 'https://github.com/'.$user.'/'.$repo,
+                'package'     => $zip_source
+            );
         }
     }
     return $data;
 
-    echo $data;
+    echo $data;    
 }
 add_filter('pre_set_site_transient_update_themes', 'automatic_GitHub_updates', 100, 1);
+
+
+
+function rename_updated_theme($true, $hook_extra, $result) {
+    // Check if the updated theme is the one we want to rename
+    if ($hook_extra['theme'] === 'crest-controller-theme-main') {
+        // Get the path to the updated theme
+        $theme_dir = $result['destination'];
+        // Rename the theme directory
+        $new_theme_dir = WP_CONTENT_DIR . '/themes/crest-controller-theme-main';
+        if (rename($theme_dir, $new_theme_dir)) {
+            // Rename successful
+        } else {
+            // Rename failed, log an error
+            error_log("Failed to rename theme directory to $new_theme_dir");
+        }   
+    }
+}
+add_action('upgrader_post_install', 'rename_updated_theme', 10, 3);
+
+
 
 add_filter('http_request_args', function($parsed_args, $url) {
     $token = get_field('github_token', 'option'); //https://github.com/settings/personal-access-tokens/new
