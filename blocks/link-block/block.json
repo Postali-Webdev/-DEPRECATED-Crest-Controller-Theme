@@ -1,13 +1,13 @@
 {
-    "name": "acf/accordion",
-    "title": "Crest Accordion Block",
+    "name": "acf/links",
+    "title": "Crest Link Block",
     "description": "Accordions block using ACF fields.",
     "category": "formatting",
     "icon": "admin-comments",
-    "keywords": ["accordion"],
+    "keywords": ["links"],
     "acf": {
         "mode": "preview",
-        "renderTemplate": "accordions.php"
+        "renderTemplate": "link-block.php"
     },
     "supports": {
         "anchor": true
